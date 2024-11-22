@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireHRRole", policy => policy.RequireRole("HR"));
+});
+
 builder.Services.AddScoped<ApprovalWorkflowService>();
 
 // Add services to the container.
