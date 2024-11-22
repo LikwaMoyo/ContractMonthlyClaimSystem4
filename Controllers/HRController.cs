@@ -22,7 +22,7 @@ namespace ContractMonthlyClaimSystem4.Controllers
         public async Task<IActionResult> ApprovedClaims()
         {
             var approvedClaims = await _context.Claims
-                .Include(c => c.SubmitterId)
+                .Include(c => c.Submitter)
                 .Where(c => c.Status == ClaimStatus.Approved)
                 .ToListAsync();
 

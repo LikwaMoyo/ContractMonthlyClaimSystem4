@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ContractMonthlyClaimSystem4.Models.Claim>
+
+@{
+    ViewData["Title"] = "Approved Claims";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Claim ID</th>
+            <th>Lecturer Name</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Final Payment</th>
+            <th>Submission Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.Submitter.Email</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate.ToString("C")</td>
+                <td>@claim.FinalPayment.ToString("C")</td>
+                <td>@claim.SubmissionDate.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" onclick="window.location.href='@Url.Action("GenerateReport", "HR")'">Generate Report</button>

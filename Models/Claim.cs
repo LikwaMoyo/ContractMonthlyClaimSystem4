@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContractMonthlyClaimSystem4.Models
 {
@@ -38,6 +40,10 @@ namespace ContractMonthlyClaimSystem4.Models
         // ID of the user who submitted the claim
         [Required]
         public string SubmitterId { get; set; }
+
+        // Navigation property to the submitter
+        [ForeignKey("SubmitterId")]
+        public IdentityUser Submitter { get; set; }
     }
 
     public enum ClaimStatus
