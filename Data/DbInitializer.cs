@@ -1,6 +1,4 @@
-﻿// Data/DbInitializer.cs
-
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -10,17 +8,15 @@ namespace ContractMonthlyClaimSystem4.Data
 {
     public static class DbInitializer
     {
-        // Change return type from void to Task
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             try
             {
-                // Get the role manager and user manager services
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
                 // Define roles
-                string[] roles = { "Lecturer", "Coordinator", "Manager" };
+                string[] roles = { "Lecturer", "Coordinator", "Manager", "HR" };
 
                 // Create roles if they do not exist
                 foreach (var role in roles)
@@ -31,59 +27,38 @@ namespace ContractMonthlyClaimSystem4.Data
                     }
                 }
 
-                // Create a test user
-                var testUser = new IdentityUser
+                // Create a test HR user
+                var hrUserEmail = "hr@example.com";
+                var hrUser = new IdentityUser
                 {
-                    UserName = "coordinator@example.com",
-                    Email = "coordinator@example.com",
+                    UserName = hrUserEmail,
+                    Email = hrUserEmail,
                     EmailConfirmed = true
                 };
 
-                // Check if the user already exists
-                if (userManager.Users.All(u => u.UserName != testUser.UserName))
+                if (userManager.Users.All(u => u.UserName != hrUserEmail))
                 {
-                    var result = await userManager.CreateAsync(testUser, "Password123!");
+                    var result = await userManager.CreateAsync(hrUser, "Password123!");
 
                     if (result.Succeeded)
                     {
-                        // Assign the Coordinator role to the user
-                        await userManager.AddToRoleAsync(testUser, "Coordinator");
+                        // Assign the HR role to the user
+                        await userManager.AddToRoleAsync(hrUser, "HR");
                     }
                     else
                     {
                         // Log or handle the errors
                         foreach (var error in result.Errors)
                         {
-                            Console.WriteLine($"Error creating user: {error.Description}");
+                            Console.WriteLine($"Error creating HR user: {error.Description}");
                         }
-                    }
-                }
-
-                // Add a test lecturer user
-                var lecturerUser = new IdentityUser
-                {
-                    UserName = "lecturer@example.com",
-                    Email = "lecturer@example.com",
-                    EmailConfirmed = true
-                };
-
-                // Check if the lecturer user already exists
-                if (userManager.Users.All(u => u.UserName != lecturerUser.UserName))
-                {
-                    var result = await userManager.CreateAsync(lecturerUser, "Password123!");
-
-                    if (result.Succeeded)
-                    {
-                        // Assign the Lecturer role to the user
-                        await userManager.AddToRoleAsync(lecturerUser, "Lecturer");
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception (you can use a logging framework)
                 Console.WriteLine($"An error occurred during database initialization: {ex.Message}");
-                throw; // Rethrow to let the calling method handle it
+                throw;
             }
         }
     }
