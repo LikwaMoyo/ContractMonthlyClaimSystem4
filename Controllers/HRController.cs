@@ -12,7 +12,7 @@ namespace ContractMonthlyClaimSystem4.Controllers
     public class HRController : Controller
     {
 
-        //
+        // prevents unauthorized accessibility
         private readonly ApplicationDbContext _context;
 
         public HRController(ApplicationDbContext context)
