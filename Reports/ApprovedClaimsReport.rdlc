@@ -1,0 +1,6 @@
+﻿namespace ContractMonthlyClaimSystem4.Reports
+{
+    public class ApprovedClaimsReports
+    {
+    }
+}
