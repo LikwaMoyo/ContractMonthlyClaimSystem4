@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ContractMonthlyClaimSystem4.Models.Claim>
+
+@{
+    ViewData["Title"] = "My Claims";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Submission Date</th>
+            <th>Status</th>
+            <th>Notes</th>
+            <th>Documents</th>
+            <th>Final Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate.ToString("C")</td>
+                <td>@claim.SubmissionDate.ToString("g")</td>
+                <td>
+                    <span class="badge badge-secondary">@claim.Status.ToString()</span>
+                </td>
+                <td>@claim.Notes</td>
+                <td>
+                    @if (claim.SupportingDocuments != null && claim.SupportingDocuments.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var doc in claim.SupportingDocuments)
+                            {
+                                <li>
+                                    <a href="@doc.FilePath" target="_blank">@doc.FileName</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No documents.</p>
+                    }
+                </td>
+                <td>@claim.FinalPayment.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

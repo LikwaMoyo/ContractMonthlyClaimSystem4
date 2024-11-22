@@ -1,0 +1,111 @@
+﻿@* Views/ClaimsManagement/Index.cshtml *@
+@model IEnumerable<ContractMonthlyClaimSystem4.Models.Claim>
+
+@{
+    ViewData["Title"] = "Pending Claims";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Display Validation Errors -->
+@if (TempData["ValidationErrors"] != null)
+{
+    var errors = TempData["ValidationErrors"] as List<string>;
+    if (errors != null && errors.Any())
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in errors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Submission Date</th>
+            <th>Notes</th>
+            <th>Actions</th>
+            <th>Supporting Documents</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate.ToString("C")</td>
+                <td>@claim.SubmissionDate.ToString("g")</td>
+                <td>@claim.Notes</td>
+                <td>
+                    <!-- Approve Button -->
+                    <form asp-action="Approve" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@claim.Id" />
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                    <!-- Reject Button -->
+                    <form asp-action="Reject" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@claim.Id" />
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- Display supporting documents -->
+                    @if (claim.SupportingDocuments != null && claim.SupportingDocuments.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var doc in claim.SupportingDocuments)
+                            {
+                                <li>
+                                    <a href="@doc.FilePath" target="_blank">@doc.FileName</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No supporting documents.</p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.approve-btn').click(function () {
+                var claimId = $(this).data('id');
+
+                $.ajax({
+                    url: '/api/ClaimsApi/Approve/' + claimId,
+                    type: 'POST',
+                    success: function (response) {
+                        alert(response.message);
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 400) {
+                            var errors = xhr.responseJSON.errors;
+                            alert('Validation Errors:\n' + errors.join('\n'));
+                        } else {
+                            alert('An error occurred.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

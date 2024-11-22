@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Submission Confirmation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Your claim has been submitted successfully!</p>
+
+<p><strong>Final Payment:</strong> @Model.FinalPayment.ToString("C")</p>
+
+<!-- Optionally display the uploaded file names -->
+@if (TempData["UploadedFiles"] != null)
+{
+    var uploadedFiles = TempData["UploadedFiles"] as List<string>;
+    if (uploadedFiles != null && uploadedFiles.Count > 0)
+    {
+        <h4>Uploaded Files:</h4>
+        <ul>
+            @foreach (var fileName in uploadedFiles)
+            {
+                <li>@fileName</li>
+            }
+        </ul>
+    }
+}
+
