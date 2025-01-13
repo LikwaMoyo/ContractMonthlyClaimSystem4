@@ -1,8 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ContractMonthlyClaimSystem4.Models.Claim
+
+@{
+    ViewData["Title"] = "Submit Claim";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <!-- Include the Status field as a hidden input -->
+    <input type="hidden" asp-for="Status" />
+
+    <div class="form-group">
+        <label asp-for="HoursWorked"></label>
+        <input asp-for="HoursWorked" class="form-control" />
+        <span asp-validation-for="HoursWorked" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="HourlyRate"></label>
+        <input asp-for="HourlyRate" class="form-control" />
+        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+    </div>
+
+    <!-- Final Payment Field (Read-only) -->
+    <div class="form-group">
+        <label asp-for="FinalPayment"></label>
+        <input asp-for="FinalPayment" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+
+    <!-- File Upload Section -->
+    <div class="form-group">
+        <label>Upload Supporting Documents</label>
+        <input type="file" name="uploadedFiles" multiple class="form-control-file" />
+        <small class="form-text text-muted">Allowed file types: .pdf, .docx, .xlsx. Max size per file: 10 MB.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/claimSubmission.js"></script>
+}
