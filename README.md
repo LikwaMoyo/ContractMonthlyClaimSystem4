@@ -3,7 +3,6 @@
 - Lecture login: hr@example
 - Presentation
 
-- notes git user sameer is a mistake idk how it got there most probably from other projects 
 
 ## For testing purposes
 - On the DbInitializer.cs, there 2 users that are used for testing to simulation logging in as a Coordinator or a Lecturer
