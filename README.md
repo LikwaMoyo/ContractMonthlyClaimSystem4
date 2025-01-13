@@ -11,7 +11,7 @@
 ## For testing purposes
 - On the DbInitializer.cs, there 2 users that are used for testing to simulation logging in as a Coordinator or a Lecturer
 - For lecturer: 
-	- Email : lecturer@example.com
+	- Email : hr@example.com
 	- Passowrd : Password123!
 	
 - For Coordinator:
