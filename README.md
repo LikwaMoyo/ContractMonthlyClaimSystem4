@@ -1,12 +1,9 @@
-# ContractMonthlyClaimSystem project
----
+## Changes 
 
-## ASP.net Core is running .net 6.0 and packages installed also run their respective 6.0 versions like the following
-- Microsoft.EntityFrameworkCore.SqlServer
-- Microsoft.EntityFrameworkCore.Tools
-- Microsoft.AspNetCore.Identity.EntityFrameworkCore
-- Microsoft.ReportingServices.ReportViewerControl.WinForms [ Install latest version ]
-- FluentValidation [ Install version 11 or greater ]
+- Lecture login: hr@example
+- Presentation
+
+- notes git user sameer is a mistake idk how it got there most probably from other projects 
 
 ## For testing purposes
 - On the DbInitializer.cs, there 2 users that are used for testing to simulation logging in as a Coordinator or a Lecturer
